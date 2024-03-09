@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 app.get('/', (req, res) => {
-    res.status(200).json("Initial root for Mailer.");
+    res.status(200).json({ message: "Initial root for Mailer." });
 });
 
 app.use("/otp", otpRoute);

@@ -18,40 +18,40 @@ const sendOtp = (req, res) => {
 
     let mailOption = {
         from: fromEmailID,
-        to: `${toEmailID}`,
+        to: toEmailID,
         subject: subject,
         text: `This is your otp ${otp}.`
     };
 
     trasporter.sendMail(mailOption, function (err) {
         if (err) {
-            console.log(err);
+            res.send({ status: "error" });
         } else {
-            console.log("Otp sent on Email...");
+            const OtpModel = new otpModel({ emailId: toEmailID, otp: otp });
+            let save = OtpModel.save();
+
+            setTimeout(async () => {
+                let deleteOtp = await otpModel.findOneAndDelete({ otp: otp });
+            }, 5 * 60 * 1000);
+
+            if (save) {
+                res.send({ status: "success", message: "otp send successfully." });
+            } else {
+                res.send({ status: "error", message: "otp is not sent." });
+            }
         };
     });
 
-    const OtpModel = new otpModel({ emailId: toEmailID, otp: otp });
-    let save = OtpModel.save();
 
-    setTimeout(async () => {
-        let deleteOtp = await otpModel.findOneAndDelete({ otp: otp });
-    }, 5 * 60 * 1000);
-
-    if (save) {
-        res.send({ message: "otp send successfully." });
-    } else {
-        res.send({ message: "otp is not sent." });
-    }
 };
 
 const verifyOtp = async (req, res) => {
     const { emailID, otp } = req.body;
     let getData = await otpModel.findOneAndDelete({ emailId: emailID, otp: otp });
     if (getData) {
-        res.send({ message: "otp verified." });
+        res.send({ status: "success", message: "otp verified." });
     } else {
-        res.send({ message: "wrong otp" });
+        res.send({ status: "error", message: "wrong otp." });
     }
 };
 
