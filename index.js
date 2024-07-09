@@ -1,29 +1,35 @@
-const express = require('express');
-const app = express();
-const path = require('path');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const mongoose = require('mongoose');
-const otpRoute = require('./otp.route');
+const nodemailer = require('nodemailer');
 
-require("dotenv").config({ path: path.join(__dirname, "./.env") });
+class Mailer {
+    constructor({ email, passKey }) {
+        this.email = email;
+        this.passKey = passKey;
+        this.transporter = nodemailer.createTransport({
+            service: 'gmail',
+            host: "smtp.gmail.com",
+            auth: {
+                user: email,
+                pass: passKey,
+            },
+        });
+    }
 
-app.use(express.json());
-app.use(bodyParser.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+    async sendMail({ to, subject, htmlBody }) {
+        try {
+            const mailOptions = {
+                from: this.email,
+                to,
+                subject,
+                text: '',
+                html: htmlBody,
+            };
 
-app.get('/', (req, res) => {
-    res.status(200).json({ message: "Initial root for Mailer." });
-});
+            const result = await this.transporter.sendMail(mailOptions);
+            return true;
+        } catch (error) {
+            return false;
+        }
+    }
+}
 
-app.use("/otp", otpRoute);
-
-mongoose.connect(process.env.DATABSE_CONNECTION).then(() => {
-    app.listen(process.env.PORT, () => {
-        console.log("connection on PORT ", process.env.PORT);
-        console.log("Mongo DB connect");
-    });
-}).catch((error) => {
-    console.error('Error connecting to MongoDB : ', error);
-});
+module.exports = { Mailer };
