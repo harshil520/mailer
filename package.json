@@ -1,5 +1,5 @@
 {
-  "name": "mailer",
+  "name": "g-mailer",
   "version": "1.0.0",
   "description": "Mail utility for mobile applications to directly send mail. backend implementation not required.",
   "main": "index.js",
