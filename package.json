@@ -1,5 +1,5 @@
 {
-  "name": "g-mailer",
+  "name": "@js_module/mailer",
   "version": "1.0.0",
   "description": "Mail utility for mobile applications to directly send mail. backend implementation not required.",
   "main": "index.js",
@@ -7,8 +7,9 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
+    "quick-mail",
     "mailer",
-    "nodemailer",
+    "easy-mail",
     "email"
   ],
   "author": "harshil",
