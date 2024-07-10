@@ -1,10 +1,10 @@
 {
-  "name": "@js_module/mailer",
+  "name": "mailer",
   "version": "1.0.0",
   "description": "Mail utility for mobile applications to directly send mail. backend implementation not required.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "keywords": [
     "quick-mail",
@@ -15,6 +15,10 @@
   "author": "harshil",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
     "nodemailer": "^6.9.14"
   }
 }
